@@ -1,0 +1,98 @@
+//----------------------------------------------------------------
+//
+//       Mini C grammar
+//
+//       Walace Rodrigues - IFMG 2017 
+//
+//       ver 1.0a
+//
+----------------------------------------------------------------
+
+TOKENS = ERRO, EOF, PTOVIR, VIR, CHAR, FLOAT, INT, ID, NUMINT, NUMFLOAT,
+         ABRECHAVE, FECHACHAVE, ABREPAR, FECHAPAR, ABRECOL, FECHACOL,
+	 IF, ELSE, WHILE, FOR, RETURN, BREAK, CONTINUE, OPMULT, OPATRIB,
+	 OPORBIN, OPANDBIN, OPXORBIN, OPSHDIR, OPSHESQ, OPSOMA, OPSUB,
+	 OPDIV, OPMOD, OPINCR, OPDECR, STR, OPIGUAL, OPDIFER, OPMAIOR,
+	 OPMAIORIGUAL, OPMENORIGUAL, OPMENOR, OPORLOG, OPANDLOG, OPNOTLOG,
+	 OPNOTBIN
+	 
+ID ::= 	[a-zA-Z][a-zA-Z0-9_]*
+NUMINT ::= [0-9]+
+NUMFLOAT ::= [0-9]+([.][0-9]*)?([eE][+-]?[0-9]+)?
+STR ::= ["](\.|[^\\"])*["]
+comentários iniciam com // e seguem ate o final da linha
+
+-----------------
+
+program* -> externs
+externs -> externs extern | lambda
+extern -> var ‘;’ | func
+
+var -> type dclr | var ‘,’ dclr
+type -> 'char' | 'float' | 'int'
+dclr -> ID | ID ‘[’ ‘]’ | ID ‘[’ NUMINT ‘]’ | '*' ID
+dcls -> dcls var ‘;’ | lambda
+
+func -> fname fargs ‘{‘ dcls stmts ‘}’
+fname -> type ID | ID
+fargs -> ‘(’ args ‘)’ | ‘(’ ‘)’
+args -> type dclr | args ‘,’ type dclr
+        
+stmts ->  stmts stmt | lambda
+stmt -> expr ‘;’ 
+	| 'if' ‘(’ cexpr ‘)’ stmt
+	| 'if' '(' cexpr ')' stmt 'else' stmt
+	| 'while' '(' cexpr ')' stmt
+	| 'for' '(' expro ';' cexpro ';' expro ')' stmt
+	| 'return' ';'
+	| 'return' expr ';'
+    | 'break' ';'
+    | 'continue' ';'
+	| block
+	| ‘;’
+block -> ‘{‘ stmts ‘}’
+
+lval -> ID | ID ‘[’ expr ‘]’ | '*' ID
+expr -> lval '=' expr
+        | expr '|' expr      
+        | expr '^' expr     
+        | expr '&' expr   
+        | '~' expr
+        | expr '<<' expr        
+        | expr '>>' expr       
+        | expr '+' expr       
+        | expr '-' expr       
+        | expr '*' expr       
+        | expr '/' expr        
+        | expr '%' expr       
+        | '-' expr
+        | '+' expr            
+        | lval '++'
+        | lval '--'
+        | '++' lval
+        | '--' lval
+        | '&' lval 
+        | '*' expr
+        | ID
+        | ID ‘[’ expr ‘]’
+        | ID '(' ')'    
+        | ID '(' exprs ')' 
+        | '(' expr ')'
+        | NUMINT
+        | NUMFLOAT
+        | STR
+exprs -> expr | exprs ',' expr
+expro  ->  expr | lambda
+
+cexpr -> expr '==' expr
+        | expr '!=' expr
+        | expr '<='' expr
+        | expr '>=' expr
+        | expr '<' expr
+        | expr '>' expr
+        | cexpr '&&' cexpr
+        | cexpr '||' cexpr
+        | '!' cexpr
+        | '(' cexpr ')'
+        | expr 
+cexpro ->  cexpr | lambda
