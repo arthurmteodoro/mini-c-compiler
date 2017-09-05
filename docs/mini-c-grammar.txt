@@ -46,8 +46,8 @@ stmt -> expr ‘;’
 	| 'for' '(' expro ';' cexpro ';' expro ')' stmt
 	| 'return' ';'
 	| 'return' expr ';'
-    | 'break' ';'
-    | 'continue' ';'
+        | 'break' ';'
+        | 'continue' ';'
 	| block
 	| ‘;’
 block -> ‘{‘ stmts ‘}’
