@@ -1,0 +1,5 @@
+test$e = 123e+123 + 123; //asdasd
+"teste de String";
+"asd"asdasd";
+
+asd = asd*123;
