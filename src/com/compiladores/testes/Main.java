@@ -2,6 +2,7 @@ package com.compiladores.testes;
 
 import com.compiladores.lexico.AnalisadorLexico;
 import com.compiladores.lexico.Token;
+import com.compiladores.lexico.Tokens;
 
 public class Main
 {
@@ -15,10 +16,12 @@ public class Main
             Token token;
 
             token = analisador.getToken();
-            token = analisador.getToken();
-            token = analisador.getToken();
-            token = analisador.getToken();
-            token = analisador.getToken();
+            while(token.getToken() != Tokens.EOF)
+            {
+                System.out.println(token.getToken() + " " + token.getLexema());
+                token = analisador.getToken();
+            }
+            System.out.println(token.getToken() + " " + token.getLexema());
 
         } catch(Exception e)
         {

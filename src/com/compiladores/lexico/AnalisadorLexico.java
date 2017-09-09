@@ -77,6 +77,19 @@ public class AnalisadorLexico
         return ch == nextChar;
     }
 
+    private void getNewLine()
+    {
+        try
+        {
+            linha = arquivo.readLine();
+            posicaoLinha = 0;
+            numeroLinha++;
+        } catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public Token getToken()
     {
         Token token = null;
@@ -198,7 +211,16 @@ public class AnalisadorLexico
                             }
                             break;
                         case '/':
-                            token = new Token(Tokens.OPDIV, "/", posicaoLinha);
+                            if(verificaProximoChar('/'))
+                            {
+                                getNewLine();
+                                continue;
+                            }
+                            else
+                            {
+                                posicaoLinha--;
+                                token = new Token(Tokens.OPDIV, "/", posicaoLinha);
+                            }
                             break;
                         case '%':
                             token = new Token(Tokens.OPMOD, "%", posicaoLinha);
@@ -216,17 +238,16 @@ public class AnalisadorLexico
                             token = new Token(Tokens.OPNOTBIN, "~", numeroLinha);
                             break;
                         default:
-                            if(ch == '"')
+                            if(ch == ' ' || ch == '\n')
+                                continue;
+                            else if(ch == 0)
+                                token = new Token(Tokens.EOF, "", numeroLinha);
+                            else if(ch == '"')
                             {
                                 estado = EstadosAutomato.STRING;
                                 lexema = String.valueOf(ch);
                             }
-                            else if(ch == Character.getNumericValue('/'))
-                            {
-                                estado = EstadosAutomato.COMENTARIO;
-                                lexema = String.valueOf(ch);
-                            }
-                            else if(Character.isAlphabetic(ch))
+                            else if(Character.isLetter(ch))
                             {
                                 estado = EstadosAutomato.IDENTIFICADOR;
                                 lexema = String.valueOf(ch);
@@ -239,6 +260,133 @@ public class AnalisadorLexico
                             break;
                     }
                 break;
+
+                case NUM_INTEIRO:
+                    ch = getChar();
+                    if(Delimitadores.isDelimiter(ch))
+                    {
+                        token = new Token(Tokens.NUMINT, lexema, numeroLinha);
+                        posicaoLinha--;
+                    }
+                    else
+                    {
+                        if(ch == '.')
+                        {
+                            estado = EstadosAutomato.NUM_REAL_DECIMAL;
+                            lexema += String.valueOf('.');
+                            continue;
+                        }
+                        else if(ch == 'e')
+                        {
+                            estado = EstadosAutomato.NUM_REAL_EXP;
+                            lexema += String.valueOf('e');
+                            continue;
+                        }
+                        else
+                            lexema += String.valueOf(ch);
+                    }
+                    break;
+                    
+                case NUM_REAL_DECIMAL:
+                    ch = getChar();
+                    if(Delimitadores.isDelimiter(ch))
+                    {
+                        token = new Token(Tokens.NUMFLOAT, lexema, numeroLinha);
+                        posicaoLinha--;
+                    }
+                    else
+                    {
+                        if(ch == 'e')
+                        {
+                            estado = EstadosAutomato.NUM_REAL_EXP;
+                            lexema += String.valueOf('e');
+                            continue;
+                        }
+                        else if(Character.isDigit(ch))
+                            lexema += String.valueOf(ch);
+                        else
+                        {
+                            estado = EstadosAutomato.ERRO;
+                            lexema += String.valueOf(ch);
+                            continue;
+                        }
+                    }
+                    break;
+                    
+                case NUM_REAL_EXP:
+                    ch = getChar();
+                    if(Delimitadores.isDelimiter(ch) && lexema.charAt(lexema.length()-1) != 'e')
+                    {
+                        token = new Token(Tokens.NUMFLOAT, lexema, numeroLinha);
+                        posicaoLinha--;
+                    }
+                    else
+                    {
+                        if(ch == '+' || ch == '-')
+                        {
+                            if(lexema.charAt(lexema.length()-1) == 'e')
+                            {
+                                lexema += String.valueOf(ch);
+                            }
+                            else
+                            {
+                                lexema += String.valueOf(ch);
+                                estado = EstadosAutomato.ERRO;
+                                continue;
+                            }
+                        }
+                        else if(Character.isDigit(ch))
+                            lexema += String.valueOf(ch);
+                        else
+                        {
+                            lexema += String.valueOf(ch);
+                            estado = EstadosAutomato.ERRO;
+                            continue;
+                        }
+                    }
+                    break;
+
+                case IDENTIFICADOR:
+                    ch = getChar();
+                    if(Delimitadores.isDelimiter(ch))
+                    {
+                        token = new Token(Tokens.ID, lexema, numeroLinha);
+                        posicaoLinha--;
+                    }
+                    else
+                    {
+                        if(Character.isLetterOrDigit(ch) || ch == '_')
+                            lexema += String.valueOf(ch);
+                        else
+                        {
+                            estado = EstadosAutomato.ERRO;
+                            lexema += String.valueOf(ch);
+                            continue;
+                        }
+                    }
+                    break;
+                    
+                case STRING:
+                        ch = getChar();
+                        if(ch == '"' && lexema.charAt(lexema.length()-1) != '\\')
+                        {
+                            lexema += String.valueOf(ch);
+                            token = new Token(Tokens.STR, lexema, numeroLinha);
+                        }
+                        else
+                            lexema += String.valueOf(ch);
+                    break;
+
+                case ERRO:
+                    ch = getChar();
+                    if(Delimitadores.isDelimiter(ch))
+                    {
+                        token = new Token(Tokens.ERRO, lexema, numeroLinha);
+                        posicaoLinha--;
+                    }
+                    else
+                        lexema += String.valueOf(ch);
+                    break;
             }
         }
         return token;
