@@ -18,10 +18,10 @@ public class Main
             token = analisador.getToken();
             while(token.getToken() != Tokens.EOF)
             {
-                System.out.println(token.getToken() + " " + token.getLexema());
+                System.out.println(token);
                 token = analisador.getToken();
             }
-            System.out.println(token.getToken() + " " + token.getLexema());
+            System.out.println(token);
 
         } catch(Exception e)
         {

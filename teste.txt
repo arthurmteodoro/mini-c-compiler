@@ -1,5 +1,23 @@
-test$e = 123e+123 + 123; //asdasd
-"teste de String";
-"asd"asdasd";
+int main()
+{
+    int a, b, c;
+    char d;
+    float e, f;
+    string g;
 
-asd = asd*123;
+    g = "hello world!";//teste de comentario
+
+    int i;
+    for(i = 0; i <= 10; i++)
+    {
+        b=i-1;
+        c=soma(a, b);
+    }
+
+    return 0;
+}
+
+int soma(int a, int b)
+{
+    return a + b;
+}

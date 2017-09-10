@@ -64,4 +64,14 @@ public class Token
         result = 31 * result + linha;
         return result;
     }
+    
+    @Override
+    public String toString()
+    {
+        return "Token{" +
+                "token=" + token +
+                ", lexema='" + lexema + '\'' +
+                ", linha=" + linha +
+                '}';
+    }
 }

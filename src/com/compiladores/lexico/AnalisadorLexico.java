@@ -25,7 +25,7 @@ public class AnalisadorLexico
     {
         this.arquivo = new BufferedReader(new FileReader(nomeArquivo));
         this.arquivoNome = nomeArquivo;
-        this.linha = arquivo.readLine();
+        this.linha = arquivo.readLine().concat("\n");
         this.numeroLinha = 1;
         this.posicaoLinha = 0;
     }
@@ -34,7 +34,7 @@ public class AnalisadorLexico
     {
         this.arquivo = new BufferedReader(new FileReader(nomeArquivo));
         this.arquivoNome = nomeArquivo;
-        this.linha = arquivo.readLine();
+        this.linha = arquivo.readLine().concat("\n");
         this.numeroLinha = 1;
         this.posicaoLinha = 0;
     }
@@ -52,14 +52,19 @@ public class AnalisadorLexico
         if(linha == null)
             return 0;
 
-        if(linha.equals("") || posicaoLinha == linha.length())
+        if(posicaoLinha == linha.length())
         {
             try
             {
                 linha = arquivo.readLine();
-                posicaoLinha = 0;
+                if(linha == null)//caso leu o EOF
+                {
+                    numeroLinha++;
+                    return 0;
+                }
+                linha = linha.concat("\n");
                 numeroLinha++;
-                return '\n';
+                posicaoLinha = 0;
             } catch(IOException e)
             {
                 e.printStackTrace();
@@ -121,7 +126,7 @@ public class AnalisadorLexico
                             token = new Token(Tokens.ABREPAR, "(", numeroLinha);
                             break;
                         case ')':
-                            token = new Token(Tokens.FECHAPAR, "(", numeroLinha);
+                            token = new Token(Tokens.FECHAPAR, ")", numeroLinha);
                             break;
                         case '[':
                             token = new Token(Tokens.ABRECOL, "[", numeroLinha);
@@ -155,7 +160,7 @@ public class AnalisadorLexico
                                 token = new Token(Tokens.OPANDLOG, "&&", numeroLinha);
                             else
                             {
-                                numeroLinha--;
+                                posicaoLinha--;
                                 token = new Token(Tokens.OPANDBIN, "&", numeroLinha);
                             }
                             break;
@@ -167,12 +172,12 @@ public class AnalisadorLexico
                                 token = new Token(Tokens.OPSHDIR, ">>", numeroLinha);
                             else
                             {
-                                numeroLinha--;
+                                posicaoLinha--;
                                 if(verificaProximoChar('='))
                                     token = new Token(Tokens.OPMAIORIGUAL, ">=", numeroLinha);
                                 else
                                 {
-                                    numeroLinha--;
+                                    posicaoLinha--;
                                     token = new Token(Tokens.OPMAIOR, ">", numeroLinha);
                                 }
                             }
@@ -182,12 +187,12 @@ public class AnalisadorLexico
                                 token = new Token(Tokens.OPSHESQ, "<<", numeroLinha);
                             else
                             {
-                                numeroLinha--;
+                                posicaoLinha--;
                                 if(verificaProximoChar('='))
                                     token = new Token(Tokens.OPMENORIGUAL, "<=", numeroLinha);
                                 else
                                 {
-                                    numeroLinha--;
+                                    posicaoLinha--;
                                     token = new Token(Tokens.OPMENOR, "<", numeroLinha);
                                 }
                             }
@@ -350,7 +355,42 @@ public class AnalisadorLexico
                     ch = getChar();
                     if(Delimitadores.isDelimiter(ch))
                     {
-                        token = new Token(Tokens.ID, lexema, numeroLinha);
+                        switch(lexema)
+                        {
+                            case "char":
+                                token = new Token(Tokens.CHAR, lexema, numeroLinha);
+                                break;
+                            case "float":
+                                token = new Token(Tokens.FLOAT, lexema, numeroLinha);
+                                break;
+                            case "int":
+                                token = new Token(Tokens.INT, lexema, numeroLinha);
+                                break;
+                            case "if":
+                                token = new Token(Tokens.IF, lexema, numeroLinha);
+                                break;
+                            case "else":
+                                token = new Token(Tokens.ELSE, lexema, numeroLinha);
+                                break;
+                            case "while":
+                                token = new Token(Tokens.WHILE, lexema, numeroLinha);
+                                break;
+                            case "for":
+                                token = new Token(Tokens.FOR, lexema, numeroLinha);
+                                break;
+                            case "return":
+                                token = new Token(Tokens.RETURN, lexema, numeroLinha);
+                                break;
+                            case "break":
+                                token = new Token(Tokens.BREAK, lexema, numeroLinha);
+                                break;
+                            case "continue":
+                                token = new Token(Tokens.CONTINUE, lexema, numeroLinha);
+                                break;
+                            default:
+                                token = new Token(Tokens.ID, lexema, numeroLinha);
+                                break;
+                        }
                         posicaoLinha--;
                     }
                     else
