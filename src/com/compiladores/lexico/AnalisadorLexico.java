@@ -47,7 +47,7 @@ public class AnalisadorLexico
         this.posicaoLinha = 0;
     }
 
-    public char getChar()
+    private char getChar()
     {
         if(linha == null)
             return 0;
@@ -86,7 +86,7 @@ public class AnalisadorLexico
     {
         try
         {
-            linha = arquivo.readLine();
+            linha = arquivo.readLine().concat("\n");
             posicaoLinha = 0;
             numeroLinha++;
         } catch(IOException e)
@@ -243,7 +243,7 @@ public class AnalisadorLexico
                             token = new Token(Tokens.OPNOTBIN, "~", numeroLinha);
                             break;
                         default:
-                            if(ch == ' ' || ch == '\n')
+                            if(ch == ' ' || ch == '\n' || ch == '\t')
                                 continue;
                             else if(ch == 0)
                                 token = new Token(Tokens.EOF, "", numeroLinha);
@@ -260,6 +260,11 @@ public class AnalisadorLexico
                             else if(Character.isDigit(ch))
                             {
                                 estado = EstadosAutomato.NUM_INTEIRO;
+                                lexema = String.valueOf(ch);
+                            }
+                            else
+                            {
+                                estado = EstadosAutomato.ERRO;
                                 lexema = String.valueOf(ch);
                             }
                             break;
@@ -287,8 +292,14 @@ public class AnalisadorLexico
                             lexema += String.valueOf('e');
                             continue;
                         }
-                        else
+                        else if(Character.isDigit(ch))
                             lexema += String.valueOf(ch);
+                        else
+                        {
+                            estado = EstadosAutomato.ERRO;
+                            lexema += String.valueOf(ch);
+                            continue;
+                        }
                     }
                     break;
                     
@@ -322,7 +333,11 @@ public class AnalisadorLexico
                     ch = getChar();
                     if(Delimitadores.isDelimiter(ch) && lexema.charAt(lexema.length()-1) != 'e')
                     {
-                        token = new Token(Tokens.NUMFLOAT, lexema, numeroLinha);
+                        if(Character.isDigit(lexema.charAt(lexema.length()-1)))
+                            token = new Token(Tokens.NUMFLOAT, lexema, numeroLinha);
+                        else
+                            token = new Token(Tokens.ERRO, lexema, numeroLinha);
+                        
                         posicaoLinha--;
                     }
                     else
@@ -405,13 +420,17 @@ public class AnalisadorLexico
                         }
                     }
                     break;
-                    
                 case STRING:
                         ch = getChar();
                         if(ch == '"' && lexema.charAt(lexema.length()-1) != '\\')
                         {
                             lexema += String.valueOf(ch);
                             token = new Token(Tokens.STR, lexema, numeroLinha);
+                        }
+                        else if(ch == '\n')
+                        {
+                            if(lexema.charAt(lexema.length()-1) != '"')
+                                token = new Token(Tokens.ERRO, lexema, numeroLinha);
                         }
                         else
                             lexema += String.valueOf(ch);

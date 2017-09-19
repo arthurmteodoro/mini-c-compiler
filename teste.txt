@@ -1,23 +1,10 @@
-int main()
-{
-    int a, b, c;
-    char d;
-    float e, f;
-    string g;
-
-    g = "hello world!";//teste de comentario
-
-    int i;
-    for(i = 0; i <= 10; i++)
-    {
-        b=i-1;
-        c=soma(a, b);
-    }
-
-    return 0;
-}
-
-int soma(int a, int b)
-{
-    return a + b;
+for(i=2;i<=10;i++){
+	int a = 10;
+	if(a == 3 && a >= 4 || a == 1){
+		a = a + 3;(&%$#jhgkjhg86867 khj++_)--
+		float b = a * 5.4e-2lk + 5.;// 9
+		//teste teste
+		//int x = "asdfg\"\\"hhj"; "
+		"
+	}
 }
