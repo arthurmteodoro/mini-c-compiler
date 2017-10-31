@@ -1,4 +1,4 @@
-package com.compiladores.semantico;
+package com.compiladores.sintatico;
 
 import com.compiladores.lexico.AnalisadorLexico;
 import com.compiladores.lexico.Token;

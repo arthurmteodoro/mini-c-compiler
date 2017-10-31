@@ -1,9 +1,6 @@
 package com.compiladores.testes;
 
-import com.compiladores.lexico.AnalisadorLexico;
-import com.compiladores.lexico.Token;
-import com.compiladores.lexico.Tokens;
-import com.compiladores.semantico.AnalisadorSintatico;
+import com.compiladores.sintatico.AnalisadorSintatico;
 
 import java.io.IOException;
 
