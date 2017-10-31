@@ -7,7 +7,7 @@ public class Delimitadores
         if(ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '&' || ch == '|' ||
            ch == '(' || ch == ')' || ch == '[' || ch == ']' || ch == '{' || ch == '}' ||
            ch == ';' || ch == ',' || ch == '~' || ch == '^' || ch == ' ' || ch == '=' ||
-           ch == '<' || ch == '>' || ch == '!' || ch == '\n' || ch == '\t')
+           ch == '<' || ch == '>' || ch == '!' || ch == '\n' || ch == '\t' || ch == '"')
             return true;
         return false;
     }

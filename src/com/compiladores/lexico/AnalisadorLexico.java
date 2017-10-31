@@ -86,7 +86,9 @@ public class AnalisadorLexico
     {
         try
         {
-            linha = arquivo.readLine().concat("\n");
+            linha = arquivo.readLine();
+            if(linha != null)
+                linha.concat("\n");
             posicaoLinha = 0;
             numeroLinha++;
         } catch(IOException e)
@@ -422,18 +424,24 @@ public class AnalisadorLexico
                     break;
                 case STRING:
                         ch = getChar();
-                        if(ch == '"' && lexema.charAt(lexema.length()-1) != '\\')
+                        if((ch == '"' && lexema.charAt(lexema.length()-1) != '\\')
+                          || (ch == '"' && lexema.charAt(lexema.length()-1) == '\\' && lexema.charAt(lexema.length()-2) == '\\'))
                         {
                             lexema += String.valueOf(ch);
                             token = new Token(Tokens.STR, lexema, numeroLinha);
                         }
-                        else if(ch == '\n')
-                        {
-                            if(lexema.charAt(lexema.length()-1) != '"')
-                                token = new Token(Tokens.ERRO, lexema, numeroLinha);
-                        }
                         else
-                            lexema += String.valueOf(ch);
+                        {
+                            if(ch == '\n')
+                            {
+                                estado = EstadosAutomato.ERRO;
+                                continue;
+                            }
+                            else
+                            {
+                                lexema += String.valueOf(ch);
+                            }
+                        }
                     break;
 
                 case ERRO:

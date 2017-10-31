@@ -1,10 +1,35 @@
-for(i=2;i<=10;i++){
-	int a = 10;
-	if(a == 3 && a >= 4 || a == 1){
-		a = a + 3;(&%$#jhgkjhg86867 khj++_)--
-		float b = a * 5.4e-2lk + 5.;// 9
-		//teste teste
-		//int x = "asdfg\"\\"hhj"; "
-		"
-	}
+int soma(int a, int b)
+{
+    return a + b;
+}
+
+int main()
+{
+    int a;
+    int b;
+    int c[];
+
+    for(i = 0; i < 10; i++)
+    {
+        c[i] = soma(a, i);
+    }
+
+    if(a < 10)
+    {
+        if(b < 10)
+        {
+            a = 10;
+        }
+    }
+    else
+    {
+        b = 1-0;
+    }
+
+    while(i < 10)
+    {
+        c[3] = *a;
+    }
+
+    return 0;
 }

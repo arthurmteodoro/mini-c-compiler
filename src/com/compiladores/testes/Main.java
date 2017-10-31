@@ -3,12 +3,15 @@ package com.compiladores.testes;
 import com.compiladores.lexico.AnalisadorLexico;
 import com.compiladores.lexico.Token;
 import com.compiladores.lexico.Tokens;
+import com.compiladores.semantico.AnalisadorSintatico;
+
+import java.io.IOException;
 
 public class Main
 {
     public static void main(String args[])
     {
-        AnalisadorLexico analisador = new AnalisadorLexico();
+        /*AnalisadorLexico analisador = new AnalisadorLexico();
         try
         {
             analisador.abreArquivo("teste.txt");
@@ -24,6 +27,15 @@ public class Main
             System.out.println(token);
 
         } catch(Exception e)
+        {
+            e.printStackTrace();
+        }*/
+    
+        try
+        {
+            AnalisadorSintatico analisador = new AnalisadorSintatico("teste.txt");
+            analisador.parser();
+        } catch(IOException e)
         {
             e.printStackTrace();
         }
