@@ -22,6 +22,7 @@ public class AnalisadorSintatico
         lookahead = analisadorLexico.getToken();
         program();
         consume(Tokens.EOF);
+        System.out.println("Compilação realizada com sucesso.");
     }
     
     private void program()
@@ -816,8 +817,8 @@ public class AnalisadorSintatico
         }
         else
         {
-            System.out.println("Erro na linha "+lookahead.getLinha());
-            System.out.println("Era esperado o token " + token.name() + " porém foi recebido "+ lookahead.getToken());
+            System.err.println("Erro na linha "+lookahead.getLinha());
+            System.err.println("Era esperado o token " + token + " porém foi recebido "+ lookahead.getToken()+".");
             System.exit(1);
         }
     }

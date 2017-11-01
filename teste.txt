@@ -23,7 +23,7 @@ int main()
     }
     else
     {
-        b = 1-0;
+        b = 1 - 0;
     }
 
     while(i < 10)
