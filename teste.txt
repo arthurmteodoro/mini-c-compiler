@@ -3,7 +3,7 @@ int soma(int a, int b)
     return a + b;
 }
 
-int main()
+int main(int argc, int* argv)
 {
     int a;
     int b;
@@ -23,13 +23,15 @@ int main()
     }
     else
     {
-        b = 1 - 0;
+        b = 1 - ((4*a/4)%5);
     }
 
     while(i < 10)
     {
         c[3] = *a;
     }
+
+    c = ( a ^ b & c | a ) || asd && qwe;
 
     return 0;
 }
