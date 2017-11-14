@@ -60,16 +60,17 @@ public class AnalisadorSintatico
     
     private void restoextern()
     {
-        if(lookahead.getToken() == Tokens.OPMULT)
+        if(lookahead.getToken() == Tokens.ID)
+        {
+            consume(Tokens.ID);
+            restoextern2();
+        }
+        else
         {
             consume(Tokens.OPMULT);
             consume(Tokens.ID);
             restovars();
-        }
-        else
-        {
-            consume(Tokens.ID);
-            restoextern2();
+    
         }
     }
     
@@ -111,9 +112,9 @@ public class AnalisadorSintatico
     {
         if(lookahead.getToken() == Tokens.INT)
             consume(Tokens.INT);
-        else if(lookahead.getToken() == Tokens.FLOAT)
+        if(lookahead.getToken() == Tokens.FLOAT)
             consume(Tokens.FLOAT);
-        else if(lookahead.getToken() == Tokens.CHAR)
+        if(lookahead.getToken() == Tokens.CHAR)
             consume(Tokens.CHAR);
     }
     
@@ -146,13 +147,13 @@ public class AnalisadorSintatico
     
     private void restodclr2()
     {
-        if(lookahead.getToken() == Tokens.NUMINT)
+        if(lookahead.getToken() == Tokens.FECHACOL)
         {
-            consume(Tokens.NUMINT);
             consume(Tokens.FECHACOL);
         }
         else
         {
+            consume(Tokens.NUMINT);
             consume(Tokens.FECHACOL);
         }
     }
@@ -339,15 +340,15 @@ public class AnalisadorSintatico
     
     private void lval()
     {
-        if(lookahead.getToken() == Tokens.OPMULT)
-        {
-            consume(Tokens.OPMULT);
-            consume(Tokens.ID);
-        }
-        else
+        if(lookahead.getToken() == Tokens.ID)
         {
             consume(Tokens.ID);
             restolval();
+        }
+        else
+        {
+            consume(Tokens.OPMULT);
+            consume(Tokens.ID);
         }
     }
     
@@ -472,6 +473,10 @@ public class AnalisadorSintatico
         {
             consume(Tokens.OPMAIOR);
             orbin();
+        }
+        else
+        {
+            lambda();
         }
     }
     
@@ -729,7 +734,7 @@ public class AnalisadorSintatico
         {
             consume(Tokens.NUMFLOAT);
         }
-        else if(lookahead.getToken() == Tokens.STR)
+        else// if(lookahead.getToken() == Tokens.STR)
         {
             consume(Tokens.STR);
         }
