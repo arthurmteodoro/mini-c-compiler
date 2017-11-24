@@ -368,16 +368,23 @@ public class AnalisadorSintatico
     
     private void expr()
     {
-        or();
-        restoexpr();
+        boolean r1 = or();
+        restoexpr(r1);
     }
     
-    private void restoexpr()
+    private void restoexpr(boolean lval)
     {
         if(lookahead.getToken() == Tokens.OPATRIB)
         {
-            consume(Tokens.OPATRIB);
-            expr();
+            if(lval)
+            {
+                consume(Tokens.OPATRIB);
+                expr();
+            }
+            else
+            {
+                error_semantico("Erro de Atribuição");
+            }
         }
         else
         {
@@ -385,316 +392,364 @@ public class AnalisadorSintatico
         }
     }
     
-    private void or()
+    private boolean or()
     {
-        and();
-        restoor();
+        boolean r1 = and();
+        boolean r2 = restoor();
+        return r1 && r2;
     }
     
-    private void restoor()
+    private boolean restoor()
     {
         if(lookahead.getToken() == Tokens.OPORLOG)
         {
             consume(Tokens.OPORLOG);
             or();
+            return false;
         }
         else
         {
             lambda();
+            return true;
         }
     }
     
-    private void and()
+    private boolean and()
     {
-        not();
-        restoand();
+        boolean r1 = not();
+        boolean r2 = restoand();
+        return r1 && r2;
     }
     
-    private void restoand()
+    private boolean restoand()
     {
         if(lookahead.getToken() == Tokens.OPANDLOG)
         {
             consume(Tokens.OPANDLOG);
             and();
+            return false;
         }
         else
         {
             lambda();
+            return true;
         }
     }
     
-    private void not()
+    private boolean not()
     {
         if(lookahead.getToken() == Tokens.OPNOTLOG)
         {
             consume(Tokens.OPNOTLOG);
             not();
+            return false;
         }
         else
         {
-            cfator();
+            return cfator();
         }
     }
     
-    private void cfator()
+    private boolean cfator()
     {
-        orbin();
-        restocfator();
+        boolean r1 = orbin();
+        boolean r2 = restocfator();
+        return r1 && r2;
     }
     
-    private void restocfator()
+    private boolean restocfator()
     {
         if(lookahead.getToken() == Tokens.OPIGUAL)
         {
             consume(Tokens.OPIGUAL);
             orbin();
+            return false;
         }
         else if(lookahead.getToken() == Tokens.OPDIFER)
         {
             consume(Tokens.OPDIFER);
             orbin();
+            return false;
         }
         else if(lookahead.getToken() == Tokens.OPMENORIGUAL)
         {
             consume(Tokens.OPMENORIGUAL);
             orbin();
+            return false;
         }
         else if(lookahead.getToken() == Tokens.OPMAIORIGUAL)
         {
             consume(Tokens.OPMAIORIGUAL);
             orbin();
+            return false;
         }
         else if(lookahead.getToken() == Tokens.OPMENOR)
         {
             consume(Tokens.OPMENOR);
             orbin();
+            return false;
         }
         else if(lookahead.getToken() == Tokens.OPMAIOR)
         {
             consume(Tokens.OPMAIOR);
             orbin();
+            return false;
         }
         else
         {
             lambda();
+            return true;
         }
     }
     
-    private void orbin()
+    private boolean orbin()
     {
-        xorbin();
-        restoorbin();
+        boolean r1 = xorbin();
+        boolean r2 = restoorbin();
+        return r1 && r2;
     }
     
-    private void restoorbin()
+    private boolean restoorbin()
     {
         if(lookahead.getToken() == Tokens.OPORBIN)
         {
             consume(Tokens.OPORBIN);
             xorbin();
             restoorbin();
+            return false;
         }
         else
         {
             lambda();
+            return true;
         }
     }
     
-    private void xorbin()
+    private boolean xorbin()
     {
-        andbin();
-        restoxorbin();
+        boolean r1 = andbin();
+        boolean r2 = restoxorbin();
+        return r1 && r2;
     }
     
-    private void restoxorbin()
+    private boolean restoxorbin()
     {
         if(lookahead.getToken() == Tokens.OPXORBIN)
         {
             consume(Tokens.OPXORBIN);
             andbin();
             restoxorbin();
+            return false;
         }
         else
         {
             lambda();
+            return true;
         }
     }
     
-    private void andbin()
+    private boolean andbin()
     {
-        rola();
-        restoandbin();
+        boolean r1 = rola();
+        boolean r2 = restoandbin();
+        return r1 && r2;
     }
     
-    private void restoandbin()
+    private boolean restoandbin()
     {
         if(lookahead.getToken() == Tokens.OPANDBIN)
         {
             consume(Tokens.OPANDBIN);
             rola();
             restoandbin();
+            return false;
         }
         else
         {
             lambda();
+            return true;
         }
     }
     
-    private void rola()
+    private boolean rola()
     {
-        soma();
-        restorola();
+        boolean r1 = soma();
+        boolean r2 = restorola();
+        return r1 && r2;
     }
     
-    private void restorola()
+    private boolean restorola()
     {
         if(lookahead.getToken() == Tokens.OPSHESQ)
         {
             consume(Tokens.OPSHESQ);
             soma();
             restorola();
+            return false;
         }
         else if(lookahead.getToken() == Tokens.OPSHDIR)
         {
             consume(Tokens.OPSHDIR);
             soma();
             restorola();
+            return false;
         }
         else
         {
             lambda();
+            return true;
         }
     }
     
-    private void soma()
+    private boolean soma()
     {
-        mult();
-        restosoma();
+        boolean r1 = mult();
+        boolean r2 = restosoma();
+        return r1 && r2;
     }
     
-    private void restosoma()
+    private boolean restosoma()
     {
         if(lookahead.getToken() == Tokens.OPSOMA)
         {
             consume(Tokens.OPSOMA);
             mult();
             restosoma();
+            return false;
         }
         else if(lookahead.getToken() == Tokens.OPSUB)
         {
             consume(Tokens.OPSUB);
             mult();
             restosoma();
+            return false;
         }
         else
         {
             lambda();
+            return true;
         }
     }
     
-    private void mult()
+    private boolean mult()
     {
-        ender();
-        restomult();
+        boolean r1 = ender();
+        boolean r2 = restomult();
+        return r1 && r2;
     }
     
-    private void restomult()
+    private boolean restomult()
     {
         if(lookahead.getToken() == Tokens.OPMULT)
         {
             consume(Tokens.OPMULT);
-            ender();
-            restomult();
+            boolean r1 = ender();
+            boolean r2 = restomult();
+            return r1 && r2;
         }
         else if(lookahead.getToken() == Tokens.OPDIV)
         {
             consume(Tokens.OPDIV);
             ender();
             restomult();
+            return false;
         }
         else if(lookahead.getToken() == Tokens.OPMOD)
         {
             consume(Tokens.OPMOD);
             ender();
             restomult();
+            return false;
         }
         else
         {
             lambda();
+            return true;
         }
     }
     
-    private void ender()
+    private boolean ender()
     {
         if(lookahead.getToken() == Tokens.OPANDBIN)
         {
             consume(Tokens.OPANDBIN);
             lval();
+            return false;
         }
         else if(lookahead.getToken() == Tokens.OPMULT)
         {
+            boolean error;
             consume(Tokens.OPMULT);
-            ender();
+            error = ender();
+            if(!error)
+                error_semantico("Referenciação inválida");
+            return error;
         }
         else
         {
-            uno();
+            return uno();
         }
     }
     
-    private void uno()
+    private boolean uno()
     {
         if(lookahead.getToken() == Tokens.OPSUB)
         {
             consume(Tokens.OPSUB);
             uno();
+            return false;
         }
         else if(lookahead.getToken() == Tokens.OPSOMA)
         {
             consume(Tokens.OPSOMA);
             uno();
+            return false;
         }
         else
         {
-            notbin();
+            return notbin();
         }
     }
     
-    private void notbin()
+    private boolean notbin()
     {
         if(lookahead.getToken() == Tokens.OPNOTBIN)
         {
             consume(Tokens.OPNOTBIN);
             notbin();
+            return false;
         }
         else
         {
-            incpre();
+            return incpre();
         }
     }
     
-    private void incpre()
+    private boolean incpre()
     {
         if(lookahead.getToken() == Tokens.OPINCR)
         {
             consume(Tokens.OPINCR);
             lval();
+            return true;
         }
         else if(lookahead.getToken() == Tokens.OPDECR)
         {
             consume(Tokens.OPDECR);
             lval();
+            return true;
         }
         else
         {
-            incpos();
+            return incpos();
         }
     }
     
-    private void incpos()
+    private boolean incpos()
     {
-        fator();
+        boolean retorno = fator();
         restoincpos();
+        return retorno;
     }
     
     private void restoincpos()
@@ -713,49 +768,56 @@ public class AnalisadorSintatico
         }
     }
     
-    private void fator()
+    private boolean fator()
     {
         if(lookahead.getToken() == Tokens.ID)
         {
             consume(Tokens.ID);
-            restofator1();
+            return restofator1();
         }
         else if(lookahead.getToken() == Tokens.ABREPAR)
         {
             consume(Tokens.ABREPAR);
             expr();
             consume(Tokens.FECHAPAR);
+            return false;
         }
         else if(lookahead.getToken() == Tokens.NUMINT)
         {
             consume(Tokens.NUMINT);
+            return false;
         }
         else if(lookahead.getToken() == Tokens.NUMFLOAT)
         {
             consume(Tokens.NUMFLOAT);
+            return false;
         }
-        else// if(lookahead.getToken() == Tokens.STR)
+        else
         {
             consume(Tokens.STR);
+            return false;
         }
     }
     
-    private void restofator1()
+    private boolean restofator1()
     {
         if(lookahead.getToken() == Tokens.ABRECOL)
         {
             consume(Tokens.ABRECOL);
             expr();
             consume(Tokens.FECHACOL);
+            return true;
         }
         else if(lookahead.getToken() == Tokens.ABREPAR)
         {
             consume(Tokens.ABREPAR);
             restofator2();
+            return false;
         }
         else
         {
             lambda();
+            return true;
         }
     }
     
@@ -826,5 +888,12 @@ public class AnalisadorSintatico
             System.err.println("Era esperado o token " + token + " porém foi recebido "+ lookahead.getToken()+".");
             System.exit(1);
         }
+    }
+    
+    private void error_semantico(String error)
+    {
+        System.err.println("Erro semântico na linha "+lookahead.getLinha());
+        System.err.println(error);
+        System.exit(1);
     }
 }

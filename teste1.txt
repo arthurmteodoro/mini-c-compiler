@@ -1,0 +1,113 @@
+int a (int c, int b){
+
+	int d;
+	int c[10];
+	int *d;
+	int a[];
+	a = a[1] + 10.e-1;
+	a = a[2] + 10.e-3;
+	d = "A + B\"A/B\\sdsdsd\"";
+	c = d+ b;
+	c = d -b;
+	c = d/ b;
+	c = d% b;
+	c = d* b;
+	for(i = 1; i%5 == 0; i++){
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	if((a==b||a>6)&&a>=7||a>7&&(a<=7||(a+b)>-5)){
+		c = c++;
+		c = ++c;
+		c = c--;
+		c = --c;
+	}else if (a!=b || !a){
+		if(a>= 1.5e-3){
+			for (i = 0; i < a; ++i)
+			{
+				return (1 + 2);
+				while(a > 6){
+					continue;
+				}
+
+			}
+
+			if((a*b) > 6){
+				if ((a/b) == 6){
+					if (a!=b){
+						a = &a+1;
+					}
+					break;
+				}else{
+					x = x <<8;
+					x = 7>>8;
+					x = ~8;
+					x = x | 8;
+					x = x & 8;
+				}
+			}
+
+
+		}
+	}
+	a = -((a+1)*2+(5*2*(-3)))/5;
+	a = a[1+(3*2)/5];
+
+}
+
+char teste(int *a, int *c){
+	char ab;
+	ab = "AUX";
+	a++;
+	c--;
+	return ab;
+
+
+}
+
+float teste(char a, int b, float c){
+	int bb[];
+	float cc[];
+	char aa[];
+	int i;
+	int w;
+	for (i = 0; i < 10; ++i)
+	{
+		aa[i] = a;
+		bb[i] = b;
+		cc[i] = c;
+	}
+	w= 0;
+	if (aa[3] == "AB"){
+		break;
+		i = 9;
+		w = 5;
+	}
+
+	while(w>=10){
+		aa[w] = a;
+		bb[w] = b;
+		cc[w] = c;
+
+		if(cc[w] != "AUX"){
+			continue;
+		}
+	}
+
+	return (bb[i] + cc[w]);
+
+
+
+}

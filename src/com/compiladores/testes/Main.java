@@ -30,7 +30,7 @@ public class Main
     
         try
         {
-            AnalisadorSintatico analisador = new AnalisadorSintatico("teste.txt");
+            AnalisadorSintatico analisador = new AnalisadorSintatico("teste1.txt");
             analisador.parser();
         } catch(IOException e)
         {
