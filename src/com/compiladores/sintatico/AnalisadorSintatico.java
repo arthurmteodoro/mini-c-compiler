@@ -104,7 +104,8 @@ public class AnalisadorSintatico
         }
         else
         {
-            lambda();
+            //lambda();
+            consume(Tokens.PTOVIR);
         }
     }
     
@@ -164,7 +165,7 @@ public class AnalisadorSintatico
            lookahead.getToken() == Tokens.INT)
         {
             var();
-            consume(Tokens.PTOVIR);
+            //consume(Tokens.PTOVIR);
             dcls();
         }
         else
@@ -770,10 +771,10 @@ public class AnalisadorSintatico
     
     private boolean fator()
     {
-        if(lookahead.getToken() == Tokens.ID)
+        if(lookahead.getToken() == Tokens.STR)
         {
-            consume(Tokens.ID);
-            return restofator1();
+            consume(Tokens.STR);
+            return false;
         }
         else if(lookahead.getToken() == Tokens.ABREPAR)
         {
@@ -794,8 +795,8 @@ public class AnalisadorSintatico
         }
         else
         {
-            consume(Tokens.STR);
-            return false;
+            consume(Tokens.ID);
+            return restofator1();
         }
     }
     

@@ -99,7 +99,7 @@ float teste(char a, int b, float c){
 	while(w>=10){
 		aa[w] = a;
 		bb[w] = b;
-		cc[w] = c;
+		cc[w] = *c[8];
 
 		if(cc[w] != "AUX"){
 			continue;
